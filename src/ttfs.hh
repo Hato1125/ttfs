@@ -144,7 +144,7 @@ namespace ttfs {
 
     const section& p2_section() const noexcept {
       if (!has_doubles()) {
-        __TTFS_PANIC("no doubles section for p2_section()");
+        __TTFS_PANIC("course::p2_section() called but doubles not present");
       }
 
       return std::get<doubles>(_sections).p2;
@@ -209,28 +209,28 @@ namespace ttfs {
 
     const course& easy() const noexcept {
       if (!has_easy()) {
-        __TTFS_PANIC("no easy section for easy()");
+        __TTFS_PANIC("chart::easy() called but easy not present");
       }
       return *_info.easy;
     }
 
     const course& normal() const noexcept {
       if (!has_normal()) {
-        __TTFS_PANIC("no normal section for normal()");
+        __TTFS_PANIC("chart::normal() called but normal not present");
       }
       return *_info.normal;
     }
 
     const course& hard() const noexcept {
       if (!has_hard()) {
-        __TTFS_PANIC("no hard section for hard()");
+        __TTFS_PANIC("chart::hard() called but hard not present");
       }
       return *_info.hard;
     }
 
     const course& oni() const noexcept {
       if (!has_oni()) {
-        __TTFS_PANIC("no oni section for oni()");
+        __TTFS_PANIC("chart::oni() called but oni not present");
       }
       return *_info.oni;
     }
@@ -238,7 +238,7 @@ namespace ttfs {
 
     const course& edit() const noexcept {
       if (!has_edit()) {
-        __TTFS_PANIC("no edit section for edit()");
+        __TTFS_PANIC("chart::edit() called but edit not present");
       }
       return *_info.edit;
     }
