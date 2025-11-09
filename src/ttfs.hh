@@ -16,9 +16,9 @@
 } while (0)
 
 namespace ttfs {
-  constexpr std::uint8_t major = 1u;
-  constexpr std::uint8_t minor = 0u;
-  constexpr std::uint8_t patch = 0u;
+  constexpr std::uint8_t major = 1;
+  constexpr std::uint8_t minor = 0;
+  constexpr std::uint8_t patch = 0;
 
   enum class note_type : std::uint8_t {
     rest,
@@ -106,6 +106,12 @@ namespace ttfs {
     };
 
   public:
+    constexpr course() noexcept : _type(course_type::easy),
+      _level(0),
+      _score_init(0),
+      _score_diff(0),
+      _sections({}) {}
+
     constexpr course(
       course_type type,
       std::uint8_t level,
@@ -186,6 +192,13 @@ namespace ttfs {
 
   class chart {
   public:
+    constexpr chart() noexcept : _info{
+      .genre = genre_type::unknown,
+      .bpm = 0.0f,
+      .offset = 0.0f,
+      .demostart = 0.0f,
+    } {}
+
     constexpr chart(chart_info&& info) noexcept : _info(std::move(info)) {}
 
     bool has_easy() const noexcept { return _info.easy.has_value(); }
