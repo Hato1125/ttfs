@@ -1,6 +1,9 @@
 #ifndef _TTFS_TTFS_HH
 #define _TTFS_TTFS_HH
 
+#include <map>
+#include <string>
+#include <string_view>
 #include <print>
 #include <vector>
 #include <variant>
@@ -38,6 +41,18 @@ namespace ttfs {
     hard,
     oni,
     edit,
+  };
+
+  enum class genre_type : std::uint8_t {
+    unknown,
+    pop,
+    kids,
+    namco,
+    classic,
+    variety,
+    game,
+    vocaloid,
+    anime,
   };
 
   class note {
@@ -144,6 +159,103 @@ namespace ttfs {
     std::uint32_t _score_init;
     std::uint32_t _score_diff;
     std::variant<section, doubles> _sections;
+  };
+
+  struct chart_info {
+    genre_type genre;
+
+    std::string_view wave;
+    std::string_view title;
+    std::string_view subtitle;
+    float bpm;
+    float offset;
+    float demostart;
+
+    std::optional<course> easy;
+    std::optional<course> normal;
+    std::optional<course> hard;
+    std::optional<course> oni;
+    std::optional<course> edit;
+
+    std::map<
+      std::string,
+      std::variant<std::string, std::int32_t>
+    > headers;
+  };
+
+
+  class chart {
+  public:
+    constexpr chart(chart_info&& info) noexcept : _info(std::move(info)) {}
+
+    bool has_easy() const noexcept { return _info.easy.has_value(); }
+    bool has_normal() const noexcept { return _info.normal.has_value(); }
+    bool has_hard() const noexcept { return _info.hard.has_value(); }
+    bool has_oni() const noexcept { return _info.oni.has_value(); }
+    bool has_edit() const noexcept { return _info.edit.has_value(); }
+
+    const course& easy() const noexcept {
+      if (!has_easy()) {
+        __TTFS_PANIC("no easy section for easy()");
+      }
+      return *_info.easy;
+    }
+
+    const course& normal() const noexcept {
+      if (!has_normal()) {
+        __TTFS_PANIC("no normal section for normal()");
+      }
+      return *_info.normal;
+    }
+
+    const course& hard() const noexcept {
+      if (!has_hard()) {
+        __TTFS_PANIC("no hard section for hard()");
+      }
+      return *_info.hard;
+    }
+
+    const course& oni() const noexcept {
+      if (!has_oni()) {
+        __TTFS_PANIC("no oni section for oni()");
+      }
+      return *_info.oni;
+    }
+
+
+    const course& edit() const noexcept {
+      if (!has_edit()) {
+        __TTFS_PANIC("no edit section for edit()");
+      }
+      return *_info.edit;
+    }
+
+    genre_type genre() const noexcept { return _info.genre; }
+
+    float bpm() const noexcept { return _info.bpm; }
+    float offset() const noexcept { return _info.offset; }
+    float demostart() const noexcept { return _info.demostart; }
+    std::string_view wave() const noexcept { return _info.wave; }
+    std::string_view title() const noexcept { return _info.title; }
+    std::string_view subtitle() const noexcept { return _info.subtitle; }
+
+    template <typename T>
+    std::optional<std::reference_wrapper<const T>> get(
+      const std::string& name
+    ) const noexcept {
+      const auto it = _info.headers.find(name);
+
+      if (it != _info.headers.end()) {
+        if (const auto* ptr = std::get_if<T>(&it->second)) {
+          return std::ref(*ptr);
+        }
+      }
+
+      return std::nullopt;
+    }
+
+  private:
+    chart_info _info;
   };
 }
 
