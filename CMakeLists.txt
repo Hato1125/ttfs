@@ -7,9 +7,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-add_library(${CMAKE_PROJECT_NAME} INTERFACE)
+add_library(ttfs INTERFACE)
 
-target_include_directories(${CMAKE_PROJECT_NAME} INTERFACE
+target_include_directories(ttfs INTERFACE
   ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
