@@ -16,6 +16,8 @@ target_include_directories(${CMAKE_PROJECT_NAME} INTERFACE
 set(SANDBOX_DIR ${CMAKE_SOURCE_DIR}/sandbox)
 set(SANDBOX_CMAKELISTS ${SANDBOX_DIR}/CMakeLists.txt)
 
-if(EXISTS ${SANDBOX_DIR} AND EXISTS ${SANDBOX_CMAKELISTS})
+option(TTFS_BUILD_SANDBOX "Build the ttfs sandbox program" ON)
+
+if(TTFS_BUILD_SANDBOX AND EXISTS ${SANDBOX_DIR} AND EXISTS ${SANDBOX_CMAKELISTS})
   add_subdirectory(${SANDBOX_DIR})
 endif()
