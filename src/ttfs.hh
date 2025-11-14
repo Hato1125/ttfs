@@ -80,17 +80,23 @@ namespace ttfs {
     std::vector<event> events;
 
     std::size_t don_size() const noexcept {
-      return std::count_if(notes.begin(), notes.end(), [](const note& note) {
-        return note.type == note_type::don
-          || note.type == note_type::big_don;
-      });
+      std::size_t size = 0;
+      for (const auto& n : notes) {
+        if (n.type == note_type::don || n.type == note_type::big_don) {
+          ++size;
+        };
+      }
+      return size;
     }
 
     std::size_t katsu_size() const noexcept {
-      return std::count_if(notes.begin(), notes.end(), [](const note& note) {
-        return note.type == note_type::katsu
-          || note.type == note_type::big_katsu;
-      });
+      std::size_t size = 0;
+      for (const auto& n : notes) {
+        if (n.type == note_type::katsu || n.type == note_type::big_katsu) {
+          ++size;
+        };
+      }
+      return size;
     }
 
     std::size_t notes_size() const noexcept { return notes.size(); }
@@ -234,7 +240,6 @@ namespace ttfs {
       }
       return *_info.oni;
     }
-
 
     const course& edit() const noexcept {
       if (!has_edit()) {
